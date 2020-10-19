@@ -1,0 +1,24 @@
+{
+  "name": "vanilla-js-sample-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "copy-webpack-plugin": "^6.2.1",
+    "css-loader": "^5.0.0",
+    "html-webpack-plugin": "^4.5.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.1.3",
+    "webpack-cli": "^4.0.0"
+  },
+  "dependencies": {
+    "@idscan/idvc": "^1.8.22"
+  }
+}
