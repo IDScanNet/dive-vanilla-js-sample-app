@@ -2,26 +2,48 @@ import IDVC from '@idscan/idvc';
 import '../node_modules/@idscan/idvc/dist/css/idvc.css';
 
 
-
-
 new IDVC({
     el: 'videoCapturingEl',
-    networkUrl: '/assets/networks',
     licenseKey: 'LICENSE KEY REPLACE ME',
-    types: ['ID'],
-    showSubmitBtn: false,
-    enableLimitation: false,
-    autoContinue : true,
-    isShowVersion : false,
-    tapBackSide : true,
-    tapFace : true,
-    realFaceMode : 'all',
+    isShowManualSwitchButton: {mobile: true, desktop: true} ,
+    showSubmitBtn: true,
+    isShowVersion : true,
+    tapOnVideo: false,
+    tapBackSide: false,
+    minPDFframes: 1,
+    parseMRZ: false,
+    tapFace: false,
+    enableLimitation: true,
+    autoContinue: true,
+    resizeUploadedImage: 1500,
+    showForceCapturingBtn: false,
+    fixFrontOrientAfterUpload: false,
+    enableFlash: false,
+    capturingMode: 4,
     steps: [
         {type: 'front', name: 'Front Scan'},
         {type: 'face', name: 'Selfie'}
     ],
-    onChange (event) {
-         console.log(event.step);
+    useCDN: true,
+    networkUrl: '/assets/networks',
+    showPreviewForOneStep: true,
+    priority:  'auto',
+    realFaceMode : 'all',
+    types: ['ID'],
+    strictAllowedTypes: false,
+    enableGeolocation: false,
+    displayParsedData: false,
+    onChange (data) {
+         console.log(data);
+    },
+    onCameraError(data){
+        console.log(data);
+    },
+    onReset(data){
+        console.log(data);
+    },
+    onRetakeHook(data){
+        console.log(data);
     },
     submit (data) {
         let backStep = data.steps.find(item => item.type === 'back')
@@ -32,7 +54,10 @@ new IDVC({
             backOrSecondImageBase64: backStep.img.split (/:image\/(jpeg|png);base64,/)[2],
             faceImageBase64: data.steps.find (item => item.type === 'face').img.split (/:image\/(jpeg|png);base64,/)[2],
             documentType: data.documentType,
-            trackString: trackString
+            trackString: trackString,
+            userAgent: window.navigator.userAgent,
+            captureMethod: data.captureMethod,
+            verifyFace: true
         }
         
         fetch ('https://dvs2.idware.net/api/Request', {
@@ -50,16 +75,14 @@ new IDVC({
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                     body: JSON.stringify ({
-                        requestId: response.requestId,
-                        documentType: response.documentType
+                        requestId: response.requestId
                     })
                 }).then (response => response.json ())
                     .then (data => {
-                        
-                        alert((data.payload.isDocumentSuccess) ? 'Document valid' : 'Document invalid')
+                        console.log(data);
                     })
-            }).catch(() => {
-            
+            }).catch((err) => {
+                console.err(err);
         })
     }
     });
