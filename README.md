@@ -9,7 +9,7 @@ npm install
 2. Next download the latest version of the IDscan.net web library
 
 ```
-npm install @idscan/idvc@latest
+npm install @idscan/idvc2@latest
 ```
 
 3. Next build the application
