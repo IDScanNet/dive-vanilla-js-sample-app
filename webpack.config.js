@@ -1,5 +1,4 @@
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -25,8 +24,7 @@ module.exports = {
       }
   },
   plugins: [
-    new CopyWebpackPlugin ({ patterns: [ { from: 'node_modules/@idscan/idvc/dist/networks/**/*', to: 'assets/[folder]/[name].[ext]', toType: 'template' } ] }),
-    new HtmlWebpackPlugin({
+        new HtmlWebpackPlugin({
         title: 'DVS Demo Application',
         template: 'index.html'
       })
