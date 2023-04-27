@@ -1,4 +1,4 @@
-# DVS Web API Vanilla Javascript Sample Application
+# DIVE Web API Vanilla Javascript Sample Application
 
 1. First download  all the app's dependencies
 
