@@ -69,7 +69,7 @@ let idvc = new IDVC({
     idvc.showSpinner(true);
     let frontStep, pdfStep, faceStep, mrzStep, photoStep, barcodeStep;
     let frontImage, backImage, faceImage, photoImage, barcodeImage;
-    let trackString;
+    let rawTrackString;
     let captureMethod;
     let verifyFace = true;
 
@@ -84,7 +84,7 @@ let idvc = new IDVC({
         backImage = pdfStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
         faceImage = faceStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
 
-        trackString = pdfStep && pdfStep.trackString ? pdfStep.trackString : "";
+        rawTrackString = pdfStep && pdfStep.trackString ? pdfStep.trackString : "";
 
         captureMethod =
           JSON.stringify(+frontStep.isAuto) +
@@ -100,7 +100,7 @@ let idvc = new IDVC({
         frontImage = mrzStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
         faceImage = faceStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
 
-        trackString = mrzStep && mrzStep.mrzText ? mrzStep.mrzText : "";
+        rawTrackString = mrzStep && mrzStep.mrzText ? mrzStep.mrzText : "";
 
         captureMethod =
           JSON.stringify(+mrzStep.isAuto) + JSON.stringify(+faceStep.isAuto);
@@ -120,14 +120,20 @@ let idvc = new IDVC({
       default:
     }
 
+    const trackStringArray = rawTrackString.split(".");
+    let trackString = trackStringArray[0];
+    let barcodeParams = trackStringArray[1];
+
     let request = {
       frontImageBase64: frontImage,
       backOrSecondImageBase64: backImage,
       faceImageBase64: faceImage,
       documentType: data.documentType,
-      trackString: {
-        data: trackString
-      }
+      trackString:{
+        data:  trackString,
+        barcodeParams: barcodeParams
+      },
+      metadata:{}
     };
 
     fetch("https://dvs2.idware.net/api/v4/verify", {
