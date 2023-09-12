@@ -80,9 +80,9 @@ let idvc = new IDVC({
         pdfStep = data.steps.find((item) => item.type === "pdf");
         faceStep = data.steps.find((item) => item.type === "face");
 
-        frontImage = frontStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        backImage = pdfStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        faceImage = faceStep.img.split(/:image\/(jpeg|png);base64,/)[2];
+        frontImage = frontStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
+        backImage = pdfStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
+        faceImage = faceStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
 
         trackString = pdfStep && pdfStep.trackString ? pdfStep.trackString : "";
 
@@ -97,8 +97,8 @@ let idvc = new IDVC({
         mrzStep = data.steps.find((item) => item.type === "mrz");
         faceStep = data.steps.find((item) => item.type === "face");
 
-        frontImage = mrzStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        faceImage = faceStep.img.split(/:image\/(jpeg|png);base64,/)[2];
+        frontImage = mrzStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
+        faceImage = faceStep.img.split(/:image\/(jpeg|png|webp);base64,/)[2];
 
         trackString = mrzStep && mrzStep.mrzText ? mrzStep.mrzText : "";
 
@@ -112,33 +112,10 @@ let idvc = new IDVC({
       case 6:
       // International IDs with 3 line MRZs
       case 7:
-        frontStep = data.steps.find((item) => item.type === "front");
-        mrzStep = data.steps.find((item) => item.type === "mrz");
-        faceStep = data.steps.find((item) => item.type === "face");
-
-        frontImage = frontStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        backImage = mrzStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        faceImage = faceStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-
-        trackString = mrzStep && mrzStep.mrzText ? mrzStep.mrzText : "";
-
-        captureMethod =
-          JSON.stringify(+frontStep.isAuto) +
-          JSON.stringify(+mrzStep.isAuto) +
-          JSON.stringify(+faceStep.isAuto);
-
         break;
       case 8:
-        photoStep = data.steps.find((item) => item.type === "photo");
-        photoImage = photoStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        captureMethod = JSON.stringify(+photoStep.isAuto);
-        verifyFace = false;
         break;
       case 9:
-        barcodeStep = data.steps.find((item) => item.type === "barcode");
-        barcodeImage = barcodeStep.img.split(/:image\/(jpeg|png);base64,/)[2];
-        captureMethod = JSON.stringify(+barcodeStep.isAuto);
-        verifyFace = false;
         break;
       default:
     }
@@ -148,15 +125,12 @@ let idvc = new IDVC({
       backOrSecondImageBase64: backImage,
       faceImageBase64: faceImage,
       documentType: data.documentType,
-      trackString: trackString,
-      ssn: null,
-      overriddenSettings: null,
-      userAgent: window.navigator.userAgent,
-      captureMethod: captureMethod,
-      verifyFace: verifyFace,
+      trackString: {
+        data: trackString
+      }
     };
 
-    fetch("https://dvs2.idware.net/api/v3/Verify", {
+    fetch("https://dvs2.idware.net/api/v4/verify", {
       method: "POST",
       headers: {
         Authorization: "Bearer SECRET_KEY",
