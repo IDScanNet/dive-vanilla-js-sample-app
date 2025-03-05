@@ -20,6 +20,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@idscan/idvc2": "^2.7.2"
+    "@idscan/idvc2": "^2.15.0"
   }
 }
