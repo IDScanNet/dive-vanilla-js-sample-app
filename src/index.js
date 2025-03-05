@@ -177,7 +177,6 @@ let idvc = new IDVC({
             let frontStep, pdfStep, backStep, faceStep, mrzStep;
             let frontImage, backImage, faceImage;
             let rawTrackString;
-            let barcodeText;
             let metadataObject, captureMethod;
 
             switch(data.documentType) {
