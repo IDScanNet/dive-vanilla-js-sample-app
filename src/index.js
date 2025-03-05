@@ -156,6 +156,7 @@ let idvc = new IDVC({
                 },
             ],
         },
+    ],
     onChange(data) {
         console.log("on change", data);
     },
@@ -241,8 +242,8 @@ let idvc = new IDVC({
 
             barcodeText = backStep && backStep.text ? backStep.text : "";
             break;
-      default:
-    }
+        default:
+        }
 
         metadataObject = JSON.parse(data.metaData);
 
